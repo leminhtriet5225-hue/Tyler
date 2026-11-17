@@ -146,6 +146,50 @@
   @media (prefers-reduced-motion: reduce) {
     .run, .ribbon span, .ball::after, .ball::before, .ico, .beam, .lights circle { animation: none; }
   }
+
+  /* Layout: Hobby | Love | Dream */
+  .top { display: grid; grid-template-columns: 1fr auto 1fr; align-items: start; pointer-events: none; }
+  .top button { pointer-events: auto; }
+  .love { display: flex; flex-direction: column; align-items: center; text-align: center; gap: .5em; }
+  .love h2 { margin-bottom: 0; }
+  .crest { all: unset; cursor: none; display: block; width: clamp(52px, 9vw, 84px); }
+  .crest svg { display: block; width: 100%; filter: drop-shadow(0 6px 14px rgba(0,0,0,.4)); animation: bob 2s ease-in-out infinite alternate; }
+  @keyframes bob { to { transform: translateY(-6px) rotate(3deg); } }
+  .messi { all: unset; cursor: none; font-size: 1.15em; padding: .2em .8em; border-radius: 999px; background: var(--ink); color: var(--bg); font-variation-settings: "wght" 800, "wdth" 80; }
+  .stock { all: unset; cursor: none; display: block; color: var(--ink); transition: color .3s; }
+  .crest:focus-visible, .messi:focus-visible, .stock:focus-visible, .name:focus-visible, .score:focus-visible { outline: 3px solid #fff; outline-offset: 5px; }
+
+  .name {
+    all: unset; cursor: none; position: fixed; bottom: 1.4rem; left: 0; right: 0; margin: 0 auto; width: max-content;
+    z-index: 5; display: flex; font-size: clamp(1.2rem, 3vw, 2rem);
+    font-variation-settings: "wght" 600, "wdth" 80; letter-spacing: .01em; white-space: nowrap;
+  }
+  .name span { display: inline-block; }
+  .score {
+    all: unset; cursor: none; position: fixed; left: 3vw; bottom: 1.4rem; z-index: 6; white-space: nowrap;
+    padding: .2em .8em; border: 2px solid var(--ink); border-radius: 999px;
+    font-size: clamp(.85rem, 2vw, 1.15rem); font-variation-settings: "wght" 700, "wdth" 85; font-variant-numeric: tabular-nums;
+  }
+  .score.bomb { background: #ff3d81; border-color: #ff3d81; color: #fff; font-size: clamp(1.2rem, 4vw, 2rem); animation: tremble .1s linear infinite alternate; }
+  @keyframes tremble { from { transform: rotate(-5deg) scale(1.05); } to { transform: rotate(5deg) scale(1.15); } }
+
+  .stage { position: fixed; inset: 0; z-index: 25; display: grid; place-items: center; overflow: hidden; opacity: 0; pointer-events: none;
+    background: radial-gradient(circle, rgba(10,20,110,.85), rgba(3,6,40,.93)); }
+  .rays { position: absolute; width: 170vmax; height: 170vmax; border-radius: 50%;
+    background: repeating-conic-gradient(rgba(255,215,0,.32) 0 8deg, transparent 8deg 20deg);
+    -webkit-mask: radial-gradient(circle, #000 0, transparent 55%); mask: radial-gradient(circle, #000 0, transparent 55%);
+    animation: spin 14s linear infinite; }
+  .stage .c { position: absolute; left: 50%; top: 50%; width: var(--w); margin: calc(var(--w) * -.55) 0 0 calc(var(--w) / -2); }
+  .c svg { display: block; width: 100%; filter: drop-shadow(0 0 24px rgba(255,215,0,.7)); animation: bob 1.4s ease-in-out infinite alternate; }
+  .ten { position: absolute; font-size: min(46vw, 20rem); line-height: 1; opacity: 0; color: #f6b40e;
+    text-shadow: 0 0 40px #f6b40e, 0 0 90px #ff9f1c; font-variation-settings: "wght" 800, "wdth" 75; }
+  .lbl { position: absolute; bottom: 14vh; font-size: clamp(1.4rem, 5vw, 3rem); color: #fff; letter-spacing: .04em; font-variation-settings: "wght" 800, "wdth" 85; }
+  @media (max-width: 480px) {
+    .top { gap: .6rem; padding-inline: 2vw; }
+    .ball { font-size: 1.15em; }
+    .dream-row { flex-direction: column; align-items: flex-end; }
+  }
+  @media (prefers-reduced-motion: reduce) { .crest svg, .c svg, .rays, .score.bomb { animation: none; } }
 </style>
 </head>
 <body>
@@ -156,27 +200,35 @@
     <button class="ball" id="football" data-stop><span class="ico">⚽</span>Football</button>
     <p class="hint">Tap the ball</p>
   </section>
+  <section class="love">
+    <h2>Love</h2>
+    <button class="crest" id="chelsea" data-stop aria-label="Chelsea">
+      <svg viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="48" fill="#034694"/><circle cx="50" cy="50" r="46" fill="none" stroke="#dba111" stroke-width="3"/><circle cx="50" cy="50" r="36" fill="#0a56b8" stroke="#fff" stroke-width="3"/><text x="50" y="45" text-anchor="middle" font-size="26">🦁</text><text x="50" y="68" text-anchor="middle" font-size="17" font-weight="800" fill="#fff" font-family="Arial">CFC</text></svg>
+    </button>
+    <button class="messi" id="messi" data-stop>Messi ✨</button>
+  </section>
   <section class="dream">
     <h2>Dream</h2>
     <div class="dream-row">
       <div>
         <p>Stocks to the sky</p>
-        <svg class="spark" viewBox="0 0 120 44" aria-hidden="true"><path d="M2 40 L16 33 L28 36 L42 24 L54 28 L70 15 L82 19 L98 7 L118 3"/></svg>
+        <button class="stock" id="stock" data-stop aria-label="Stock chart"><svg class="spark" viewBox="0 0 120 44" aria-hidden="true"><path d="M2 40 L16 33 L28 36 L42 24 L54 28 L70 15 L82 19 L98 7 L118 3"/></svg></button>
       </div>
-      <p class="bank">My bank account<br><b id="bank">$53,000,000</b></p>
+      <p class="bank">My bank account<br><b id="bank">$60,000,000</b></p>
     </div>
   </section>
 </header>
-<footer class="name">Minhtriett</footer>
+<button class="name" id="name" data-stop aria-label="Minhtriett">Minhtriett</button>
+<button class="score" id="score" data-stop>Score: 0</button>
 <div class="blob" aria-hidden="true"></div>
 <script>
 (() => {
-  const el = document.getElementById("bank"), end = 53000000;
+  const el = document.getElementById("bank"), end = 60000000;
   if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
   const t0 = performance.now(), dur = 2800;
   (function tick(t) {
     const p = Math.min((t - t0) / dur, 1), e = 1 - Math.pow(1 - p, 4);
-    el.textContent = "$" + Math.round(end * e).toLocaleString("en-US");
+    el.textContent = "$" + Math.round(100000 + (end - 100000) * e).toLocaleString("en-US");
     if (p < 1) requestAnimationFrame(tick);
   })(t0);
 })();
@@ -273,12 +325,12 @@
   };
 
   function burst(x, y, o = {}) {
-    const { n = 30, glyph = null, dist = [80, 260], dur = [700, 1300], size = [6, 14], inward = false, gravity = 0 } = o;
+    const { n = 30, glyph = null, dist = [80, 260], dur = [700, 1300], size = [6, 14], inward = false, gravity = 0, colors = COLORS } = o;
     for (let i = 0; i < n; i++) {
-      const s = rnd(...size), c = COLORS[i % COLORS.length];
+      const s = rnd(...size), c = colors[i % colors.length];
       const el = glyph
         ? add("p", `font-size:${s * 1.6}px;color:${c}`, glyph)
-        : add("p", `width:${s}px;height:${s}px;background:${c};border-radius:${Math.random() < .5 ? "50%" : "2px"}`);
+        : add("p", `width:${s}px;height:${s}px;background:${c};box-shadow:0 0 ${s}px ${c};border-radius:${Math.random() < .5 ? "50%" : "2px"}`);
       const a = rnd(0, Math.PI * 2), d = rnd(...dist);
       const dx = Math.cos(a) * d, dy = Math.sin(a) * d + gravity;
       const far = `translate(${x + dx}px,${y + dy}px)`, mid = `translate(${x}px,${y}px)`;
@@ -316,6 +368,7 @@
   }
 
   /* ---- Football: sparkles + GOAL banner ---- */
+  window.FX = { burst, ring, shake, flash, add, rnd };
   const fb = document.getElementById("football");
   const banner = document.getElementById("banner");
   const ribbon = document.getElementById("ribbon");
@@ -380,6 +433,192 @@
       }, 850);
     }, 2300);
   });
+})();
+</script>
+<script>
+(() => {
+  const { burst, ring, shake, flash, add, rnd } = window.FX;
+  const $ = id => document.getElementById(id);
+  const mid = el => { const r = el.getBoundingClientRect(); return [r.left + r.width / 2, r.top + r.height / 2]; };
+  const BLAU = ["#004d98", "#a50044", "#edbb00", "#fff"], ARG = ["#74acdf", "#fff", "#f6b40e", "#fff"];
+  const BLUES = ["#fff", "#4aa3ff", "#0a56b8", "#dba111"], GREEN = ["#2bff88", "#b6ffcf", "#fff", "#00c853"];
+  const FIRE = ["#ff3d81", "#ffb02e", "#f6ff8a", "#fff", "#ff5a1f"];
+  const pop = (el, k = 1.3) => el.animate([{ transform: "scale(1)" }, { transform: `scale(${k})` }, { transform: "scale(1)" }], { duration: 350, easing: "ease-out" });
+  const text = (x, y, t, css, ms = 1400, k = 1.4) => {
+    const el = add("boom", `left:${x}px;top:${y}px;${css}`, t);
+    el.animate([{ transform: "translate(-50%,-50%) scale(.2)", opacity: 1 }, { transform: `translate(-50%,-90%) scale(${k})`, opacity: 1, offset: .35 }, { transform: `translate(-50%,-140%) scale(${k + .1})`, opacity: 0 }],
+      { duration: ms, easing: "ease-out" }).onfinish = () => el.remove();
+  };
+  function rainC(n, cols) {
+    for (let i = 0; i < n; i++) {
+      const x = rnd(0, innerWidth);
+      const el = add("p", `width:${rnd(6, 12)}px;height:${rnd(10, 18)}px;background:${cols[i % cols.length]}`);
+      el.animate([{ transform: `translate(${x}px,-30px) rotate(0)` }, { transform: `translate(${x + rnd(-120, 120)}px,${innerHeight + 40}px) rotate(${rnd(-900, 900)}deg)` }],
+        { duration: rnd(1800, 3200), delay: rnd(0, 700), easing: "cubic-bezier(.3,.1,.6,1)", fill: "both" }).onfinish = () => el.remove();
+    }
+  }
+
+  /* ---- Chelsea: fireworks ---- */
+  function firework(x, y, cols) {
+    [[34, 120], [22, 210]].forEach(([n, d], k) => {
+      for (let i = 0; i < n; i++) {
+        const a = i / n * Math.PI * 2 + k * .2, dist = d * rnd(.85, 1.1), c = cols[(i + k) % cols.length];
+        const el = add("p", `width:5px;height:5px;border-radius:50%;background:${c};box-shadow:0 0 8px ${c}`);
+        el.animate([{ transform: `translate(${x}px,${y}px)`, opacity: 1 }, { transform: `translate(${x + Math.cos(a) * dist}px,${y + Math.sin(a) * dist + 80}px) scale(.3)`, opacity: 0 }],
+          { duration: rnd(1100, 1600), delay: k * 120, easing: "cubic-bezier(.1,.8,.3,1)", fill: "both" }).onfinish = () => el.remove();
+      }
+    });
+    ring(x, y, cols[1], 260);
+  }
+  function launch(x, ty, cols) {
+    const r = add("p", "width:4px;height:20px;border-radius:3px;background:#fff;box-shadow:0 0 12px #fff,0 0 24px #7cf4ff");
+    r.animate([{ transform: `translate(${x}px,${innerHeight}px)` }, { transform: `translate(${x}px,${ty}px)` }],
+      { duration: rnd(650, 950), easing: "cubic-bezier(.2,.7,.4,1)", fill: "forwards" }).onfinish = () => { r.remove(); firework(x, ty, cols); };
+  }
+  $("chelsea").addEventListener("click", () => {
+    pop($("chelsea"), 1.4);
+    const sets = [BLUES, FIRE, ["#fff", "#f6ff8a", "#7cf4ff"], ["#2bff88", "#fff", "#b6ffcf"]];
+    for (let i = 0; i < 18; i++) setTimeout(() => launch(rnd(.08, .92) * innerWidth, rnd(.12, .5) * innerHeight, sets[i % sets.length]), i * 170);
+  });
+
+  /* ---- Stock: flies to centre, turns green, explodes ---- */
+  const st = $("stock"); let stBusy = false;
+  st.addEventListener("click", () => {
+    if (stBusy) return; stBusy = true;
+    st.style.color = "#2bff88";
+    const [x, y] = mid(st);
+    st.animate([{ transform: "translate(0,0) scale(1)", filter: "drop-shadow(0 0 0 #2bff88)" },
+      { transform: `translate(${innerWidth / 2 - x}px,${innerHeight / 2 - y}px) scale(4.5)`, filter: "drop-shadow(0 0 14px #2bff88)" }],
+      { duration: 1200, easing: "cubic-bezier(.7,0,.9,.4)", fill: "forwards" });
+    setTimeout(() => {
+      const cx = innerWidth / 2, cy = innerHeight / 2;
+      st.style.visibility = "hidden";
+      flash(); shake(16, 600);
+      ring(cx, cy, "#2bff88", 900); ring(cx, cy, "#fff", 600, 100);
+      burst(cx, cy, { n: 60, dist: [100, 480], dur: [800, 1600], colors: GREEN, gravity: 120 });
+      burst(cx, cy, { n: 18, glyph: "▲", dist: [80, 320], size: [8, 16], colors: GREEN });
+      text(cx, cy, "+9,999%", "color:#2bff88;text-shadow:0 0 24px #2bff88", 1600, 1.6);
+    }, 1200);
+    setTimeout(() => {
+      st.getAnimations().forEach(a => a.cancel());
+      st.style.color = ""; st.style.visibility = "visible";
+      st.animate([{ transform: "scale(0) rotate(-180deg)" }, { transform: "scale(1.4)", offset: .7 }, { transform: "scale(1)" }], { duration: 600, easing: "ease-out" });
+      const [rx, ry] = mid(st); burst(rx, ry, { n: 20, inward: true, dist: [60, 160], colors: GREEN });
+      stBusy = false;
+    }, 3300);
+  });
+
+  /* ---- Name: glow, rise, explode, respawn ---- */
+  const nm = $("name"); let nmBusy = false;
+  const letters = [...nm.textContent].map(ch => { const s = document.createElement("span"); s.textContent = ch; return s; });
+  nm.textContent = ""; letters.forEach(s => nm.appendChild(s));
+  nm.addEventListener("click", () => {
+    if (nmBusy) return; nmBusy = true;
+    nm.animate([{ textShadow: "0 0 0 #fff", transform: "scale(1)" }, { textShadow: "0 0 12px #fff, 0 0 30px #f6ff8a, 0 0 60px #ff3d81", transform: "scale(1.3)" }], { duration: 800, easing: "ease-in", fill: "forwards" });
+    letters.forEach((s, i) => s.animate([{ transform: "translateY(0) rotate(0)" }, { transform: `translateY(${-rnd(20, 60)}px) rotate(${rnd(-25, 25)}deg)` }], { duration: 800, delay: i * 40, easing: "ease-in", fill: "forwards" }));
+    setTimeout(() => {
+      const [cx, cy] = mid(nm);
+      letters.forEach(s => { const [x, y] = mid(s); burst(x, y, { n: 10, dist: [50, 200], size: [4, 10] }); });
+      burst(cx, cy, { n: 16, glyph: "✦", dist: [80, 300], size: [8, 16] });
+      ring(cx, cy, "#f6ff8a", 700); shake(8, 400); flash();
+      nm.style.visibility = "hidden";
+    }, 1200);
+    setTimeout(() => {
+      nm.getAnimations().forEach(a => a.cancel()); letters.forEach(s => s.getAnimations().forEach(a => a.cancel()));
+      const [cx, cy] = mid(nm);
+      burst(cx, cy, { n: 36, inward: true, dist: [100, 300], dur: [600, 800] });
+      setTimeout(() => {
+        nm.style.visibility = "visible";
+        letters.forEach((s, i) => s.animate([{ transform: "translateY(-60vh) scale(0) rotate(-360deg)", opacity: 0 }, { transform: "translateY(8px) scale(1.3) rotate(0)", opacity: 1, offset: .7 }, { transform: "none", opacity: 1 }],
+          { duration: 800, delay: i * 60, easing: "cubic-bezier(.2,.9,.3,1.2)", fill: "backwards" }));
+        ring(cx, cy, "#7cf4ff", 400); nmBusy = false;
+      }, 700);
+    }, 3300);
+  });
+
+  /* ---- Messi: Barca + Argentina crests (stylised drawings) ---- */
+  const barca = `<svg viewBox="0 0 100 110"><defs><clipPath id="cb"><path d="M8 6H92V54Q92 92 50 106Q8 92 8 54Z"/></clipPath></defs><g clip-path="url(#cb)"><rect width="100" height="110" fill="#004d98"/><rect x="8" y="40" width="21" height="70" fill="#a50044"/><rect x="50" y="40" width="21" height="70" fill="#a50044"/><rect x="8" y="6" width="84" height="34" fill="#00306a"/></g><path d="M8 6H92V54Q92 92 50 106Q8 92 8 54Z" fill="none" stroke="#edbb00" stroke-width="5"/><text x="50" y="30" text-anchor="middle" font-size="20" font-weight="800" fill="#edbb00" font-family="Arial">FCB</text><text x="50" y="78" text-anchor="middle" font-size="26">⚽</text></svg>`;
+  const arg = `<svg viewBox="0 0 100 110"><defs><clipPath id="ca"><path d="M10 22H90V58Q90 94 50 106Q10 94 10 58Z"/></clipPath></defs><text x="50" y="16" text-anchor="middle" font-size="16" fill="#f6b40e">★★★</text><g clip-path="url(#ca)"><rect width="100" height="110" fill="#74acdf"/><rect y="50" width="100" height="26" fill="#fff"/></g><path d="M10 22H90V58Q90 94 50 106Q10 94 10 58Z" fill="none" stroke="#fff" stroke-width="4"/><text x="50" y="69" text-anchor="middle" font-size="20" font-weight="800" fill="#0b2a6b" font-family="Arial">AFA</text></svg>`;
+  let msBusy = false;
+  $("messi").addEventListener("click", () => {
+    if (msBusy) return; msBusy = true;
+    const stage = add("stage");
+    stage.innerHTML = `<div class="rays"></div><div class="ten">10</div><div class="c" id="c1">${barca}</div><div class="c" id="c2">${arg}</div><div class="lbl">Messi</div>`;
+    const w = Math.min(innerWidth * .34, 200), off = w * .62, cx = innerWidth / 2, cy = innerHeight / 2;
+    stage.style.setProperty("--w", w + "px");
+    stage.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 350, fill: "forwards" });
+    const fly = (el, s) => el.animate([{ transform: `translateX(${s * innerWidth}px) rotate(${s * 540}deg)` }, { transform: `translateX(${s * off}px) rotate(0)` }],
+      { duration: 900, easing: "cubic-bezier(.2,.9,.25,1.1)", fill: "forwards" });
+    fly(stage.querySelector("#c1"), -1); fly(stage.querySelector("#c2"), 1);
+    setTimeout(() => {
+      shake(16, 600); ring(cx, cy, "#f6b40e", 1000); ring(cx, cy, "#74acdf", 700, 100);
+      burst(cx - off, cy, { n: 40, dist: [100, 380], colors: BLAU }); burst(cx + off, cy, { n: 40, dist: [100, 380], colors: ARG });
+      stage.querySelector(".ten").animate([{ transform: "scale(.2)", opacity: 0 }, { transform: "scale(1.15)", opacity: .95, offset: .6 }, { transform: "scale(1)", opacity: .9 }],
+        { duration: 700, fill: "forwards", easing: "ease-out" });
+    }, 850);
+    const iv = setInterval(() => {
+      rainC(20, BLAU); rainC(20, ARG);
+      burst(rnd(.15, .85) * innerWidth, rnd(.15, .6) * innerHeight, { n: 26, colors: BLAU.concat(ARG), dist: [80, 260] });
+    }, 700);
+    setTimeout(() => {
+      clearInterval(iv);
+      stage.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 500, fill: "forwards" }).onfinish = () => { stage.remove(); msBusy = false; };
+    }, 4800);
+  });
+
+  /* ---- Score: UFO hits add points; tap score = bomb ---- */
+  let score = 0, bombing = false;
+  const sc = $("score");
+  const setScore = () => { sc.textContent = "Score: " + score.toLocaleString("en-US"); };
+  $("ufo").addEventListener("click", () => {
+    const [x, y] = mid($("ufo"));
+    score += 100; setScore(); pop(sc, 1.35);
+    text(x, y, "+100", "font-size:clamp(1.4rem,4vw,2.4rem);color:#f6ff8a;text-shadow:0 0 16px #ffb02e", 900);
+  });
+  sc.addEventListener("click", () => {
+    if (bombing) return; bombing = true;
+    sc.classList.add("bomb"); sc.textContent = "💣 3";
+    let n = 3;
+    const spark = setInterval(() => { const [x, y] = mid(sc); burst(x, y - 14, { n: 3, glyph: "✦", dist: [20, 60], size: [6, 10], dur: [300, 500], colors: ["#ffb02e", "#f6ff8a"] }); }, 120);
+    const cd = setInterval(() => { n--; if (n > 0) sc.textContent = "💣 " + n; }, 800);
+    setTimeout(() => { clearInterval(cd); clearInterval(spark); detonate(); }, 2400);
+  });
+  function detonate() {
+    const [bx, by] = mid(sc);
+    sc.style.visibility = "hidden";
+    flash(); shake(34, 1000);
+    [["#fff", 1400], ["#ffb02e", 1100], ["#ff3d81", 800]].forEach(([c, s], i) => ring(bx, by, c, s, i * 90));
+    burst(bx, by, { n: 90, dist: [150, 700], dur: [900, 1800], colors: FIRE, gravity: 160, size: [6, 16] });
+    burst(bx, by, { n: 30, glyph: "✦", dist: [100, 500], size: [10, 20], colors: FIRE });
+    text(bx, by, "BOOM!!!", "font-size:clamp(2.6rem,11vw,7rem)", 1800, 1.8);
+    const sel = ".top h2,.top .hint,.top .ball,.top .crest,.top .messi,.top .dream-row,h1 span,.name span,.ufo svg";
+    const anims = [...document.querySelectorAll(sel)].map(el => {
+      const [x, y] = mid(el); const dx = x - bx, dy = y - by, len = Math.hypot(dx, dy) || 1, far = (innerWidth + innerHeight) * rnd(1, 1.6);
+      return el.animate([{ transform: "translate(0,0) rotate(0)" }, { transform: `translate(${dx / len * far}px,${dy / len * far}px) rotate(${rnd(-900, 900)}deg) scale(${rnd(.4, 1.4)})` }],
+        { duration: rnd(900, 1500), easing: "cubic-bezier(.1,.8,.2,1)", fill: "forwards" });
+    });
+    setTimeout(() => {
+      anims.forEach(a => { a.onfinish = () => a.cancel(); a.reverse(); });
+      setTimeout(() => {
+        score = 0; sc.classList.remove("bomb"); setScore(); sc.style.visibility = "visible"; pop(sc, 1.5);
+        const [x, y] = mid(sc); burst(x, y, { n: 20, inward: true, dist: [60, 160], colors: FIRE });
+        bombing = false;
+      }, 1500);
+    }, 3300);
+  }
+
+  /* ---- Cursor trail ---- */
+  if (!matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    let lt = 0;
+    addEventListener("pointermove", e => {
+      if (e.pointerType === "touch") return;
+      const t = performance.now(); if (t - lt < 40) return; lt = t;
+      const c = FIRE[(t / 40 | 0) % FIRE.length], s = rnd(3, 7);
+      const el = add("p", `width:${s}px;height:${s}px;border-radius:50%;background:${c};box-shadow:0 0 10px ${c};z-index:90`);
+      el.animate([{ transform: `translate(${e.clientX}px,${e.clientY}px) scale(1)`, opacity: .9 }, { transform: `translate(${e.clientX + rnd(-30, 30)}px,${e.clientY + rnd(10, 50)}px) scale(0)`, opacity: 0 }],
+        { duration: 700, easing: "ease-out" }).onfinish = () => el.remove();
+    });
+  }
 })();
 </script>
 </body>
